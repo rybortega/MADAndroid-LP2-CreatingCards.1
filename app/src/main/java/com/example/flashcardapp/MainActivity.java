@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,10 +24,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.flashcard_question).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (selected){
-//                    possibleAnswer1.setBackgroundColor(getColor(R.color.red));
-//                    pos
-//                }
+               findViewById(R.id.flashcard_answer).setVisibility(View.VISIBLE);
+                findViewById(R.id.flashcard_question).setVisibility(View.INVISIBLE);
+            }
+        });
+        findViewById(R.id.flashcard_answer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+                findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
             }
         });
 
@@ -49,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
         possibleAnswer2.setOnClickListener(wrongAnswer);
         possibleAnswer3.setOnClickListener(rightAnswer);
 
+        boolean isShowingAnswers = false;
+        findViewById(R.id.toggle_choices_visibility).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                possibleAnswer1.setVisibility(4 - possibleAnswer1.getVisibility());
+                possibleAnswer2.setVisibility(4 - possibleAnswer2.getVisibility());
+                possibleAnswer3.setVisibility(4 - possibleAnswer3.getVisibility());
+
+                if (isShowingAnswers)
+                    ((ImageView)view).setImageResource(R.drawable.hide_icon);
+                else ((ImageView)view).setImageResource(R.drawable.icon);
+            }
+        });
 
     }
 
