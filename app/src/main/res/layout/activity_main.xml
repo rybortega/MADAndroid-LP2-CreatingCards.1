@@ -13,18 +13,56 @@
         android:gravity="center"
         android:text="Who is the 44th President of the United States?"
         android:textSize="40sp"
-        android:background="@drawable/card_background"/>
+        android:background="@drawable/card_background"
+        android:elevation="5dp"/>
 
     <TextView
         android:id="@+id/flashcard_answer"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@drawable/card_background"
+        android:elevation="5dp"
         android:gravity="center"
         android:text="Barack Obama"
         android:textSize="40sp"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/possible_answer1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/flashcard_question"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:background="@drawable/possible_answer_background"
+        android:text="Bill Clinton"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/possible_answer2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/possible_answer1"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@drawable/possible_answer_background"
+        android:text="George W. Bush"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/possible_answer3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/possible_answer2"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:background="@drawable/possible_answer_background"
+        android:text="Barack Obama"
+        android:textSize="20sp"/>
 
 
 </RelativeLayout>
