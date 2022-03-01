@@ -37,6 +37,7 @@
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
         android:text="Bill Clinton"
+        android:visibility="invisible"
         android:textSize="20sp" />
 
     <TextView
@@ -49,6 +50,7 @@
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
         android:text="George W. Bush"
+        android:visibility="invisible"
         android:textSize="20sp" />
 
     <TextView
@@ -61,6 +63,7 @@
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
         android:text="Barack Obama"
+        android:visibility="invisible"
         android:textSize="20sp" />
 
     <ImageView
@@ -68,13 +71,17 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@id/possible_answer3"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/hide_icon" />
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/show_icon" />
 
     <Button
-        android:layout_width="40dp"
+        android:id="@+id/reset_button"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/toggle_choices_visibility"
-        android:text="Reset"/>
+        android:layout_below="@id/possible_answer3"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="100dp"
+        android:text="Reset" />
 </RelativeLayout>
