@@ -1,6 +1,6 @@
 ## Flashcard App
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+<img src="http://g.recordit.co/CcxxJ3TNtH.gif" width=200><br>
 ## Required
 - [x] Create New Project in Android Studio
 - [x] Add a view for the front side of the flashcard to display the question

@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 possibleAnswer2.setBackground(getDrawable(R.drawable.possible_answer_background));
                 possibleAnswer3.setBackground(getDrawable(R.drawable.possible_answer_background));
 
-
                 findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
                 findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
 
@@ -86,8 +85,5 @@ public class MainActivity extends AppCompatActivity {
                 isShowingAnswers[0] = false;
             }
         });
-
     }
-
-
 }
