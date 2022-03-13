@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
         View possibleAnswer2 = findViewById(R.id.possible_answer2);
         View possibleAnswer3 = findViewById(R.id.possible_answer3);
 
-        View flashcardQuestion = findViewById(R.id.flashcard_question);
-        View flashcardAnswer = findViewById(R.id.flashcard_answer);
+        TextView flashcardQuestion = findViewById(R.id.flashcard_question);
+        TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
 
         View.OnClickListener flipFlashcard = new View.OnClickListener() {
             @Override
@@ -97,6 +97,16 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivityForResult(intent, 100);
 
 
+
+            }
+        });
+        findViewById(R.id.edit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
+                intent.putExtra("questionValue" , flashcardQuestion.getText().toString());
+                intent.putExtra("answerValue" , flashcardAnswer.getText().toString());
+                MainActivity.this.startActivityForResult(intent, 100);
 
             }
         });

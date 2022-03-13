@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddCardActivity extends AppCompatActivity {
 
@@ -13,6 +14,14 @@ public class AddCardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
+
+        String question = getIntent().getStringExtra("questionValue");
+        String answer = getIntent().getStringExtra("answerValue");
+        if (answer != null && question != null){
+            ((EditText)findViewById(R.id.question_editText)).setText(question);
+            ((EditText)findViewById(R.id.answer_editText)).setText(answer);
+        }
+
         findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
