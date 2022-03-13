@@ -1,5 +1,5 @@
 ## Flashcard App
-<img src="http://g.recordit.co/zF3eNl1tb7.gif" width=200><br>
+<img src="YOUR_GIF_URL_HERE" width=200><br>
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
@@ -11,6 +11,6 @@
 ## Optional
 - [x] User can edit a card
 - [x] An error message is shown if the user doesn't enter both a Question and an Answer
-- [x] A notification is shown if the card was created successfully
+- [ ] A notification is shown if the card was created successfully
 - [ ] User can also enter multiple choice answers when creating a card
-- [x] App is further styled and customized!
+- [ ] App is further styled and customized!
