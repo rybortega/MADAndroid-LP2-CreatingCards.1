@@ -24,14 +24,34 @@
         android:layout_marginTop="50dp"
         android:hint="Enter the answer here" />
 
+    <EditText
+        android:id="@+id/wrongAnswer1_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/answer_editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:hint="Enter the wrong answer option here" />
+
+    <EditText
+        android:id="@+id/wrongAnswer2_editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrongAnswer1_editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:hint="Enter another wrong answer option here" />
+
+
+
     <ImageButton
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/icon_cancel" />
 
     <ImageButton
@@ -39,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="30dp"
         android:src="@drawable/icon_save" />

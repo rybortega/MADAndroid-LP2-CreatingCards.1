@@ -33,6 +33,8 @@ public class AddCardActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String question = ((EditText)findViewById(R.id.question_editText)).getText().toString();
                 String answer = ((EditText)findViewById(R.id.answer_editText)).getText().toString();
+                String wrongAnswer1 = ((EditText)findViewById(R.id.wrongAnswer1_editText)).getText().toString();
+                String wrongAnswer2 = ((EditText)findViewById(R.id.wrongAnswer2_editText)).getText().toString();
                 if (question.isEmpty() || answer.isEmpty()){
                     Toast.makeText(getApplicationContext() , "Must enter both question and answer!" , Toast.LENGTH_SHORT).show();
                     return;
@@ -40,7 +42,8 @@ public class AddCardActivity extends AppCompatActivity {
                 Intent data = new Intent();
                 data.putExtra("questionValue" , question);
                 data.putExtra("answerValue" , answer);
-
+                data.putExtra("wrongAnswer1" , wrongAnswer1);
+                data.putExtra("wrongAnswer2" , wrongAnswer2);
                 setResult(RESULT_OK , data);
                 finish();
             }

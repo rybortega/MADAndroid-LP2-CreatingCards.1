@@ -13,19 +13,23 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Random;
 
+public class MainActivity extends AppCompatActivity {
+    final boolean[] isShowingAnswers = {false};
+    boolean optionalAnswers = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View possibleAnswer1 = findViewById(R.id.possible_answer1);
-        View possibleAnswer2 = findViewById(R.id.possible_answer2);
-        View possibleAnswer3 = findViewById(R.id.possible_answer3);
-
+        TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
+        TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
+        TextView possibleAnswer3 = findViewById(R.id.possible_answer3);
+        TextView [] possibleAnswer = {possibleAnswer1 , possibleAnswer2 , possibleAnswer3};
         TextView flashcardQuestion = findViewById(R.id.flashcard_question);
         TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
+
 
         View.OnClickListener flipFlashcard = new View.OnClickListener() {
             @Override
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         flashcardAnswer.setOnClickListener(flipFlashcard);
         flashcardQuestion.setOnClickListener(flipFlashcard);
 
-        View.OnClickListener wrongAnswer = new View.OnClickListener() {
+        View.OnClickListener wrongAnswerView = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setBackgroundColor(getColor(R.color.red));
@@ -49,18 +53,26 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        View.OnClickListener rightAnswer = new View.OnClickListener() {
+        View.OnClickListener rightAnswerView = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.setBackgroundColor(getColor(R.color.lime));
             }
         };
 
-        possibleAnswer1.setOnClickListener(wrongAnswer);
-        possibleAnswer2.setOnClickListener(wrongAnswer);
-        possibleAnswer3.setOnClickListener(rightAnswer);
+//        Random random = new Random();
+//        int rightAnswer = random.nextInt(3)+1; // [1-3]
+//        for (int i = 0; i < possibleAnswer.length ; i++){
+//            if (i == rightAnswer){
+//                possibleAnswer[i].setOnClickListener(rightAnswerView);
+//            }
+//            else possibleAnswer[i].setOnClickListener(wrongAnswerView);
+//        }
+        possibleAnswer1.setOnClickListener(wrongAnswerView);
+        possibleAnswer2.setOnClickListener(wrongAnswerView);
+        possibleAnswer3.setOnClickListener(rightAnswerView);
 
-        final boolean[] isShowingAnswers = {false};
+
         findViewById(R.id.toggle_choices_visibility).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,19 +88,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.reset_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                possibleAnswer1.setVisibility(View.INVISIBLE);
-                possibleAnswer2.setVisibility(View.INVISIBLE);
-                possibleAnswer3.setVisibility(View.INVISIBLE);
-
-                possibleAnswer1.setBackground(getDrawable(R.drawable.possible_answer_background));
-                possibleAnswer2.setBackground(getDrawable(R.drawable.possible_answer_background));
-                possibleAnswer3.setBackground(getDrawable(R.drawable.possible_answer_background));
-
-                findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
-                findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
-
-                ((ImageView)findViewById(R.id.toggle_choices_visibility)).setImageResource(R.drawable.icon_show);
-                isShowingAnswers[0] = false;
+                ResetActivity();
             }
         });
 
@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
-
-
 
             }
         });
@@ -124,8 +122,50 @@ public class MainActivity extends AppCompatActivity {
                     .show();
             String questionValue = data.getExtras().getString("questionValue");
             String answerValue = data.getExtras().getString("answerValue");
-            ((TextView) findViewById(R.id.flashcard_question)).setText(questionValue);
-            ((TextView) findViewById(R.id.flashcard_answer)).setText(answerValue);
+            String wrongAnswer1 = data.getExtras().getString("wrongAnswer1");
+            String wrongAnswer2 = data.getExtras().getString("wrongAnswer2");
+
+            if (wrongAnswer1.isEmpty() || wrongAnswer2.isEmpty()) optionalAnswers = false;
+            else optionalAnswers = true;
+
+            TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
+            TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
+            TextView possibleAnswer3 = findViewById(R.id.possible_answer3);
+            TextView flashcardQuestion = findViewById(R.id.flashcard_question);
+            TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
+
+            flashcardQuestion.setText(questionValue);
+            flashcardAnswer.setText(answerValue);
+
+            possibleAnswer1.setText(wrongAnswer1);
+            possibleAnswer2.setText(wrongAnswer2);
+            possibleAnswer3.setText(answerValue);
+
+            ResetActivity();
+
         }
     }
+    public void ResetActivity(){ // Reset to default
+        TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
+        TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
+        TextView possibleAnswer3 = findViewById(R.id.possible_answer3);
+
+        possibleAnswer1.setVisibility(View.INVISIBLE);
+        possibleAnswer2.setVisibility(View.INVISIBLE);
+        possibleAnswer3.setVisibility(View.INVISIBLE);
+
+        possibleAnswer1.setBackground(getDrawable(R.drawable.possible_answer_background));
+        possibleAnswer2.setBackground(getDrawable(R.drawable.possible_answer_background));
+        possibleAnswer3.setBackground(getDrawable(R.drawable.possible_answer_background));
+
+
+        findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
+        findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+
+        ((ImageView)findViewById(R.id.toggle_choices_visibility)).setImageResource(R.drawable.icon_show);
+        ((ImageView)findViewById(R.id.toggle_choices_visibility)).setVisibility(optionalAnswers ? View.VISIBLE : View.INVISIBLE);
+        isShowingAnswers[0] = false;
+    }
+
+
 }
