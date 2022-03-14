@@ -1,5 +1,5 @@
 ## Flashcard App
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+<img src="http://g.recordit.co/9hQiLyc4c5.gif" width=200><br>
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
