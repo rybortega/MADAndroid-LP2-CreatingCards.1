@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
+                intent.putExtra("actionType" , "add");
                 MainActivity.this.startActivityForResult(intent, 100);
 
             }
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
                 intent.putExtra("questionValue" , flashcardQuestion.getText().toString());
                 intent.putExtra("answerValue" , flashcardAnswer.getText().toString());
+                intent.putExtra("actionType" , "edit");
                 MainActivity.this.startActivityForResult(intent, 100);
 
             }
@@ -163,25 +165,18 @@ public class MainActivity extends AppCompatActivity {
             String wrongAnswer1 = data.getExtras().getString("wrongAnswer1");
             String wrongAnswer2 = data.getExtras().getString("wrongAnswer2");
 
-            if (wrongAnswer1.isEmpty() || wrongAnswer2.isEmpty()) wrongAnswers = false;
-            else wrongAnswers = true;
+            wrongAnswers = !wrongAnswer1.isEmpty() && !wrongAnswer2.isEmpty();
 
-            TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
-            TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
-            TextView possibleAnswer3 = findViewById(R.id.possible_answer3);
-            TextView flashcardQuestion = findViewById(R.id.flashcard_question);
-            TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
-
-            flashcardQuestion.setText(questionValue);
-            flashcardAnswer.setText(answerValue);
-
-            possibleAnswer1.setText(wrongAnswer1);
-            possibleAnswer2.setText(wrongAnswer2);
-            possibleAnswer3.setText(answerValue);
-
-            flashcardDatabase.insertCard(new Flashcard(questionValue , answerValue));
-            allFlashcards.add(new Flashcard(questionValue, answerValue));
-
+            Flashcard newFlashcard = new Flashcard(questionValue, answerValue);
+            String text = data.getExtras().getString("actionType");
+            if (text.compareTo("add") == 0) {
+                flashcardDatabase.insertCard(newFlashcard);
+                allFlashcards.add(newFlashcard);
+            }
+            if (text.compareTo("edit") == 0){
+                flashcardDatabase.updateCard(newFlashcard);
+                allFlashcards.set(currentCardDisplayedIndex, newFlashcard);
+            }
             ResetActivity();
 
         }
