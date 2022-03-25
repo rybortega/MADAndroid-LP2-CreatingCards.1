@@ -11,17 +11,24 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     final boolean[] isShowingAnswers = {false};
-    boolean optionalAnswers = true;
+    boolean wrongAnswers = false;
+    FlashcardDatabase flashcardDatabase;
+    List<Flashcard> allFlashcards;
+    int currentCardDisplayedIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        flashcardDatabase = new FlashcardDatabase(getApplicationContext());
+        initFlashcard();
 
         TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
         TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
@@ -110,6 +117,37 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flashcardQuestion.setText(allFlashcards.get(++currentCardDisplayedIndex).getQuestion());
+                flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+
+                ResetActivity();
+            }
+        });
+        findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flashcardQuestion.setText(allFlashcards.get(--currentCardDisplayedIndex).getQuestion());
+                flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+
+                ResetActivity();
+            }
+        });
+        findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flashcardDatabase.deleteCard(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                allFlashcards.remove(currentCardDisplayedIndex);
+
+                if (currentCardDisplayedIndex >= allFlashcards.size()) currentCardDisplayedIndex = allFlashcards.size()-1;
+                ResetActivity();
+
+            }
+        });
+
     }
 
     @Override
@@ -125,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
             String wrongAnswer1 = data.getExtras().getString("wrongAnswer1");
             String wrongAnswer2 = data.getExtras().getString("wrongAnswer2");
 
-            if (wrongAnswer1.isEmpty() || wrongAnswer2.isEmpty()) optionalAnswers = false;
-            else optionalAnswers = true;
+            if (wrongAnswer1.isEmpty() || wrongAnswer2.isEmpty()) wrongAnswers = false;
+            else wrongAnswers = true;
 
             TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
             TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
@@ -141,10 +179,16 @@ public class MainActivity extends AppCompatActivity {
             possibleAnswer2.setText(wrongAnswer2);
             possibleAnswer3.setText(answerValue);
 
+            flashcardDatabase.insertCard(new Flashcard(questionValue , answerValue));
+            allFlashcards.add(new Flashcard(questionValue, answerValue));
+
             ResetActivity();
 
         }
     }
+    // Set the flashcard to default
+    // All possible answers (INVISIBLE by default)
+    // Update the next and back button
     public void ResetActivity(){ // Reset to default
         TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
         TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
@@ -161,11 +205,31 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
         findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+        ((TextView)findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+        ((TextView)findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+
 
         ((ImageView)findViewById(R.id.toggle_choices_visibility)).setImageResource(R.drawable.icon_show);
-        ((ImageView)findViewById(R.id.toggle_choices_visibility)).setVisibility(optionalAnswers ? View.VISIBLE : View.INVISIBLE);
+//        if (allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1().isEmpty() ||
+//                allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2().isEmpty()) wrongAnswers = false;
+        ((ImageView)findViewById(R.id.toggle_choices_visibility)).setVisibility(wrongAnswers ? View.VISIBLE : View.INVISIBLE);
         isShowingAnswers[0] = false;
+
+        updateNextAndBackBotton();
+        ((ImageView)findViewById(R.id.delete_button)).setVisibility((allFlashcards.size() <= 1) ? View.INVISIBLE : View.VISIBLE);
     }
 
+    public void updateNextAndBackBotton(){
+        ((ImageView)findViewById(R.id.next_button)).setVisibility(currentCardDisplayedIndex < allFlashcards.size()-1 ? View.VISIBLE : View.INVISIBLE);
+        ((ImageView)findViewById(R.id.back_button)).setVisibility(currentCardDisplayedIndex > 0 ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void initFlashcard(){
+        flashcardDatabase.initFirstCard();
+        allFlashcards = flashcardDatabase.getAllCards();
+
+        ResetActivity();
+
+    }
 
 }

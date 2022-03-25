@@ -24,26 +24,54 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/card_background"
         android:elevation="5dp"
         android:gravity="center"
         android:text="Barack Obama"
         android:textSize="40sp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
+    <ImageView
+        android:id="@+id/next_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/flashcard_question"
+        android:src="@drawable/icon_next" />
+
+    <ImageView
+    android:id="@+id/back_button"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_below="@id/flashcard_question"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="30dp"
+    android:layout_marginTop="20dp"
+    android:rotation="180"
+    android:src="@drawable/icon_next" />
+
+    <ImageView
+        android:id="@+id/delete_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/flashcard_question"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_delete" />
 
     <TextView
         android:id="@+id/possible_answer1"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/flashcard_question"
+        android:layout_below="@id/delete_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
-        android:text="Bill Clinton"
         android:textSize="20sp"
         android:visibility="invisible" />
 
@@ -56,7 +84,6 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
-        android:text="George W. Bush"
         android:textSize="20sp"
         android:visibility="invisible" />
 
@@ -69,7 +96,6 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/possible_answer_background"
         android:gravity="center"
-        android:text="Barack Obama"
         android:textSize="20sp"
         android:visibility="invisible" />
 
