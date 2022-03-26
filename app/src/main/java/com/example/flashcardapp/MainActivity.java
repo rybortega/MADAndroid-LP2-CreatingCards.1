@@ -191,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
     // All possible answers (INVISIBLE by default)
     // Update the next and back button
     public void ResetActivity(){ // Reset to default
+        allFlashcards = flashcardDatabase.getAllCards();
+
         TextView possibleAnswer1 = findViewById(R.id.possible_answer1);
         TextView possibleAnswer2 = findViewById(R.id.possible_answer2);
         TextView possibleAnswer3 = findViewById(R.id.possible_answer3);
@@ -208,9 +210,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         ((ImageView)findViewById(R.id.toggle_choices_visibility)).setImageResource(R.drawable.icon_show);
-        if (allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1().isEmpty() ||
-                allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2().isEmpty()) wrongAnswers = false;
+
+        String wa1 = allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1();
+        String wa2 = allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2();
+
+        if (wa1 == null || wa1.isEmpty() || wa2 == null || wa2.isEmpty()) wrongAnswers = false;
         else wrongAnswers = true;
+
         if (wrongAnswers){
             TextView [] possibleAnswers = {possibleAnswer1 , possibleAnswer2 , possibleAnswer3};
             setPossibleAnswerOrder(possibleAnswers);
@@ -239,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
         allFlashcards = flashcardDatabase.getAllCards();
 
         ResetActivity();
+
 
     }
 
