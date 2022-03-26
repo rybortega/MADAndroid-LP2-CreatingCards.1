@@ -3,6 +3,7 @@
 ## Lab 3
 
 <img src="http://g.recordit.co/mIpTSicXwa.gif" width=200><br>
+<img src="http://g.recordit.co/hjHKOukCbP.gif" width=200><br>
 
 ## Required
 - [x] User can create a card and still see their created card when the app is relaunched.
