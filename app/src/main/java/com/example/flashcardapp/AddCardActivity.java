@@ -17,9 +17,13 @@ public class AddCardActivity extends AppCompatActivity {
 
         String question = getIntent().getStringExtra("questionValue");
         String answer = getIntent().getStringExtra("answerValue");
+        String wrongAnswer1 = getIntent().getStringExtra("wrongAnswerValue1");
+        String wrongAnswer2 = getIntent().getStringExtra("wrongAnswerValue2");
         if (answer != null && question != null){
             ((EditText)findViewById(R.id.question_editText)).setText(question);
             ((EditText)findViewById(R.id.answer_editText)).setText(answer);
+            ((EditText)findViewById(R.id.wrongAnswer1_editText)).setText(wrongAnswer1);
+            ((EditText)findViewById(R.id.wrongAnswer2_editText)).setText(wrongAnswer2);
         }
 
         findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
