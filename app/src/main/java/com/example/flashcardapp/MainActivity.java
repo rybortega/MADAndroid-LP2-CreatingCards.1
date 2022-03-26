@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
                 intent.putExtra("actionType" , "add");
-                MainActivity.this.startActivityForResult(intent, 100);
+                MainActivity.this.startActivityForResult(intent, 200);
 
             }
         });
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && data != null){
+        if (data != null){
             Snackbar.make(findViewById(R.id.flashcard_question),
                     "Card successfully created",
                     Snackbar.LENGTH_SHORT)
@@ -168,13 +169,15 @@ public class MainActivity extends AppCompatActivity {
             wrongAnswers = !wrongAnswer1.isEmpty() && !wrongAnswer2.isEmpty();
 
             Flashcard newFlashcard = new Flashcard(questionValue, answerValue);
-            String text = data.getExtras().getString("actionType");
-            if (text.compareTo("add") == 0) {
+            if (requestCode == 200) {
                 flashcardDatabase.insertCard(newFlashcard);
                 allFlashcards.add(newFlashcard);
             }
-            if (text.compareTo("edit") == 0){
-                flashcardDatabase.updateCard(newFlashcard);
+            else if (requestCode == 100){
+                Flashcard cardEdited = allFlashcards.get(currentCardDisplayedIndex);
+                cardEdited.setQuestion(questionValue);
+                cardEdited.setAnswer(answerValue);
+                flashcardDatabase.updateCard(cardEdited);
                 allFlashcards.set(currentCardDisplayedIndex, newFlashcard);
             }
             ResetActivity();
@@ -200,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
         findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+
+        setRandomQuestion();
         ((TextView)findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
         ((TextView)findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
 
@@ -214,6 +219,13 @@ public class MainActivity extends AppCompatActivity {
         ((ImageView)findViewById(R.id.delete_button)).setVisibility((allFlashcards.size() <= 1) ? View.INVISIBLE : View.VISIBLE);
     }
 
+    public void setRandomQuestion (){
+        Random random = new Random();
+        int temp = random.nextInt(allFlashcards.size());
+        if (temp == currentCardDisplayedIndex) // in case the random question is the same
+            temp = (temp + 1) % allFlashcards.size();
+        currentCardDisplayedIndex = temp;
+    }
     public void updateNextAndBackBotton(){
         ((ImageView)findViewById(R.id.next_button)).setVisibility(currentCardDisplayedIndex < allFlashcards.size()-1 ? View.VISIBLE : View.INVISIBLE);
         ((ImageView)findViewById(R.id.back_button)).setVisibility(currentCardDisplayedIndex > 0 ? View.VISIBLE : View.INVISIBLE);

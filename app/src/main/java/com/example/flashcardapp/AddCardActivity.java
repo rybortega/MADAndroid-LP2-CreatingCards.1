@@ -44,7 +44,6 @@ public class AddCardActivity extends AppCompatActivity {
                 data.putExtra("answerValue" , answer);
                 data.putExtra("wrongAnswer1" , wrongAnswer1);
                 data.putExtra("wrongAnswer2" , wrongAnswer2);
-                data.putExtra("actionType" , getIntent().getStringExtra("actionType"));
                 setResult(RESULT_OK , data);
                 finish();
             }
