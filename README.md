@@ -1,5 +1,4 @@
 ## Lab 4
-
 <img src="YOUR_GIF_URL_HERE" width=200><br>
 
 ## Required
