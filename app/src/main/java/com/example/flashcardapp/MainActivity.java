@@ -2,12 +2,20 @@ package com.example.flashcardapp;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import android.animation.Animator;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionValues;
+import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setAnimation();
         setContentView(R.layout.activity_main);
 
         flashcardDatabase = new FlashcardDatabase(getApplicationContext());
@@ -82,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
-                //startActivity(intent);
-                MainActivity.this.startActivityForResult(intent, 200);
+
+                System.out.println("Starting AddCardActivity");
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
+                MainActivity.this.startActivityForResult(intent, 200, options.toBundle() );
             }
         });
         findViewById(R.id.edit_button).setOnClickListener(new View.OnClickListener() {
@@ -109,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 leftOutAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
+                        ResetActivity();
                     }
 
                     @Override
@@ -138,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 rightOutAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
+                        ResetActivity();
                     }
 
                     @Override
@@ -174,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+//        overridePendingTransition(R.anim.right_in, R.anim.left_out);
         if (data != null){
             Snackbar.make(findViewById(R.id.flashcard_question),
                     "Card successfully created",
@@ -302,8 +316,20 @@ public class MainActivity extends AppCompatActivity {
         float finalRadius = (float) Math.hypot(cx, cy);
         Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0f, finalRadius);
 
-        anim.setDuration(3000);
+        anim.setDuration(1000);
         anim.start();
     }
+    public void setAnimation()
+    {
+        Slide enterSlide = new Slide();
+        enterSlide.setSlideEdge(Gravity.LEFT);
+        enterSlide.setDuration(1000);
 
+        Slide exitSlide = new Slide();
+        exitSlide.setSlideEdge(Gravity.RIGHT);
+        exitSlide.setDuration(1000);
+
+        getWindow().setExitTransition(exitSlide);
+        getWindow().setEnterTransition(enterSlide);
+    }
 }

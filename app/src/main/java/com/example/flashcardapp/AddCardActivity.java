@@ -1,10 +1,19 @@
 package com.example.flashcardapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.transition.TransitionSet;
 
+import android.animation.LayoutTransition;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionValues;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,10 +21,11 @@ public class AddCardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //overridePendingTransition(R.anim.right_in , R.anim.left_out);
         super.onCreate(savedInstanceState);
+        setAnimation();
         setContentView(R.layout.activity_add_card);
 
+        System.out.println("Entering in add card activity");
         String question = getIntent().getStringExtra("questionValue");
         String answer = getIntent().getStringExtra("answerValue");
         String wrongAnswer1 = getIntent().getStringExtra("wrongAnswerValue1");
@@ -30,7 +40,7 @@ public class AddCardActivity extends AppCompatActivity {
         findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                finishAfterTransition();
             }
         });
         findViewById(R.id.save_button).setOnClickListener(new View.OnClickListener() {
@@ -50,8 +60,23 @@ public class AddCardActivity extends AppCompatActivity {
                 data.putExtra("wrongAnswer1" , wrongAnswer1);
                 data.putExtra("wrongAnswer2" , wrongAnswer2);
                 setResult(RESULT_OK , data);
-                finish();
+                finishAfterTransition();
             }
         });
+
     }
+    public void setAnimation()
+    {
+            Slide enterSlide = new Slide();
+            enterSlide.setSlideEdge(Gravity.LEFT);
+            enterSlide.setDuration(1000);
+
+            Slide exitSlide = new Slide();
+            exitSlide.setSlideEdge(Gravity.RIGHT);
+            exitSlide.setDuration(1000);
+
+            getWindow().setExitTransition(exitSlide);
+            getWindow().setEnterTransition(enterSlide);
+    }
+
 }
