@@ -3,9 +3,13 @@ package com.example.flashcardapp;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int questionVisibility = flashcardQuestion.getVisibility();
                 int answerVisibility = flashcardAnswer.getVisibility();
-
+                if (answerVisibility == View.INVISIBLE){
+                    revealAnimation(flashcardAnswer);
+                }
                 flashcardQuestion.setVisibility(answerVisibility);
                 flashcardAnswer.setVisibility(questionVisibility);
 
@@ -76,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
+                //startActivity(intent);
                 MainActivity.this.startActivityForResult(intent, 200);
-
             }
         });
         findViewById(R.id.edit_button).setOnClickListener(new View.OnClickListener() {
@@ -97,17 +103,57 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentCardDisplayedIndex++;
+                final Animation leftOutAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.left_out);
+                final Animation rightInAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.right_in);
+
+                leftOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        flashcardQuestion.startAnimation(rightInAnimation);
+                        currentCardDisplayedIndex++;
+                        ResetActivity();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                flashcardQuestion.startAnimation(leftOutAnimation);
 //                setRandomQuestion();
-                ResetActivity();
+//                ResetActivity();
             }
         });
         findViewById(R.id.back_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentCardDisplayedIndex--;
-//                setRandomQuestion();
-                ResetActivity();
+                final Animation leftInAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.left_in);
+                final Animation rightOutAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.right_out);
+
+                rightOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        flashcardQuestion.startAnimation(leftInAnimation);
+                        currentCardDisplayedIndex--;
+                        ResetActivity();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+
+                flashcardQuestion.startAnimation(rightOutAnimation);
             }
         });
         findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
@@ -247,6 +293,17 @@ public class MainActivity extends AppCompatActivity {
         ResetActivity();
 
 
+    }
+
+    public void revealAnimation(View view){
+        int cx = view.getWidth() / 2;
+        int cy = view.getHeight() / 2;
+
+        float finalRadius = (float) Math.hypot(cx, cy);
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0f, finalRadius);
+
+        anim.setDuration(3000);
+        anim.start();
     }
 
 }
