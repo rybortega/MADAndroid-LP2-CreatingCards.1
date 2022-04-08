@@ -61,18 +61,16 @@ public class MainActivity extends AppCompatActivity {
 
         TextView flashcardQuestion = findViewById(R.id.flashcard_question);
         TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
+        flashcardQuestion.setCameraDistance(25000);
+        flashcardAnswer.setCameraDistance(25000);
 
         View.OnClickListener flipFlashcard = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int questionVisibility = flashcardQuestion.getVisibility();
-                int answerVisibility = flashcardAnswer.getVisibility();
-                if (answerVisibility == View.INVISIBLE){
-                    revealAnimation(flashcardAnswer);
-                }
-                flashcardQuestion.setVisibility(answerVisibility);
-                flashcardAnswer.setVisibility(questionVisibility);
-
+                if (flashcardQuestion.getVisibility() == View.VISIBLE)
+                    flipAnimation(flashcardQuestion , flashcardAnswer);
+                else flipAnimation(flashcardAnswer, flashcardQuestion);
+                System.out.println(flashcardQuestion.getVisibility() + " " + flashcardAnswer.getVisibility());
             }
         };
         flashcardAnswer.setOnClickListener(flipFlashcard);
@@ -277,8 +275,10 @@ public class MainActivity extends AppCompatActivity {
         possibleAnswer2.setBackground(getDrawable(R.drawable.possible_answer_background));
         possibleAnswer3.setBackground(getDrawable(R.drawable.possible_answer_background));
 
-        findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
-        findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+
+        if (findViewById(R.id.flashcard_question).getVisibility() == View.INVISIBLE){
+            flipAnimation(findViewById(R.id.flashcard_answer) ,findViewById(R.id.flashcard_question) );
+        }
         ((TextView)findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
         ((TextView)findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
 
@@ -334,6 +334,35 @@ public class MainActivity extends AppCompatActivity {
 
         anim.setDuration(1000);
         anim.start();
+    }
+
+//    public void flipAnimation(View view){
+//        view.animate()
+//                .rotationY(90)
+//                .setDuration(200)
+//                .start();
+//    }
+
+    public void flipAnimation(View frontView, View backView){
+        frontView.animate()
+                .rotationY(90)
+                .setDuration(100)
+                .withEndAction(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                frontView.setVisibility(View.INVISIBLE);
+                                backView.setVisibility(View.VISIBLE);
+                                // second quarter turn
+                                backView.setRotationY(-90);
+                                backView.animate()
+                                        .rotationY(0)
+                                        .setDuration(100)
+                                        .start();
+                            }
+                        }
+                ).start();
+
     }
     public void setAnimation()
     {
