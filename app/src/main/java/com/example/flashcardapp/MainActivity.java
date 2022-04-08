@@ -8,6 +8,7 @@ import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionValues;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = 0;
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setAnimation();
         setContentView(R.layout.activity_main);
+
+        countDownTimer = new CountDownTimer(5000 , 1000) {
+            @Override
+            public void onTick(long l) {
+                TextView timerTextView = ((TextView)findViewById(R.id.timer));
+                timerTextView.setText(""+l/1000);
+            }
+
+            @Override
+            public void onFinish() {
+                ((TextView)findViewById(R.id.timer)).setText("Game Over");
+            }
+        };
 
         flashcardDatabase = new FlashcardDatabase(getApplicationContext());
         initFlashcard();
@@ -62,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         };
         flashcardAnswer.setOnClickListener(flipFlashcard);
         flashcardQuestion.setOnClickListener(flipFlashcard);
-
 
 
         findViewById(R.id.toggle_choices_visibility).setOnClickListener(new View.OnClickListener() {
@@ -92,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this , AddCardActivity.class);
 
-                System.out.println("Starting AddCardActivity");
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this);
                 MainActivity.this.startActivityForResult(intent, 200, options.toBundle() );
             }
@@ -128,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         flashcardQuestion.startAnimation(rightInAnimation);
                         currentCardDisplayedIndex++;
                         ResetActivity();
+
                     }
 
                     @Override
@@ -286,6 +300,8 @@ public class MainActivity extends AppCompatActivity {
 
         updateNextAndBackBottom();
         ((ImageView)findViewById(R.id.delete_button)).setVisibility((allFlashcards.size() <= 1) ? View.INVISIBLE : View.VISIBLE);
+        countDownTimer.cancel();
+        countDownTimer.start();
     }
 
     public void setRandomQuestion (){
