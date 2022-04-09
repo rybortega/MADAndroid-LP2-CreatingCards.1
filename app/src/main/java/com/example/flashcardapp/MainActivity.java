@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setAnimation();
         setContentView(R.layout.activity_main);
 
-        countDownTimer = new CountDownTimer(5000 , 1000) {
+        countDownTimer = new CountDownTimer(10000 , 1000) {
             @Override
             public void onTick(long l) {
                 TextView timerTextView = ((TextView)findViewById(R.id.timer));

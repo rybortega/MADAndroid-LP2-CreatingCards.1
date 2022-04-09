@@ -1,5 +1,5 @@
 ## Lab 4
-<img src="http://g.recordit.co/zqKeNvOuIR.gif" width=200><br>
+<img src="http://g.recordit.co/Nj7LGc1ORY.gif" width=200><br>
 
 ## Required
 - [x] User sees a transition animation when going from the main screen to the add card screen.
